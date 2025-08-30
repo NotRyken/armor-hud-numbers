@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.notryken.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "InGameHudMixinSquared"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

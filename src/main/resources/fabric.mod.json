@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "armor-hud-numbers",
+	"version": "${version}",
+	"name": "Armor HUD Numbers",
+	"description": "A tiny add-on for uku's Armor HUD that displays numerical durability above the armor slot.",
+	"authors": [
+		"NotRyken"
+	],
+    "contact": {
+      "homepage": "https://modrinth.com/project/e74hc5Bq",
+      "sources": "https://github.com/NotRyken/armor-hud-numbers",
+      "issues": "https://github.com/NotRyken/armor-hud-numbers/issues"
+    },
+	"license": "CC0-1.0",
+	"icon": "assets/armor-hud-numbers/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"com.notryken.ArmorHudNumbersClient"
+		]
+	},
+	"mixins": [
+		{
+			"config": "armor-hud-numbers.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": "${loader_versions}",
+		"minecraft": "${minecraft_versions}",
+		"java": "${java_versions}",
+        "ukus-armor-hud": "${armorhud_versions}"
+	}
+}
