@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
@@ -17,6 +18,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import ru.berdinskiybear.armorhud.config.ArmorHudConfig;
+
+import java.util.function.Function;
 
 @Mixin(value = InGameHud.class, priority = 1100)
 public class InGameHudMixinSquared {
@@ -78,15 +81,15 @@ public class InGameHudMixinSquared {
             method = "@MixinSquared:Handler",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V"
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIFFIIII)V"
             )
     )
     private void wrapDrawTexture(
             DrawContext instance,
-            Identifier texture,
+            Function<Identifier, RenderLayer> renderLayers,
+            Identifier sprite,
             int x,
             int y,
-            int z,
             float u,
             float v,
             int width,
