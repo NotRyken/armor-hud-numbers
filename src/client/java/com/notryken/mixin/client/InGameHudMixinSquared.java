@@ -6,11 +6,11 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
@@ -18,8 +18,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import ru.berdinskiybear.armorhud.config.ArmorHudConfig;
-
-import java.util.function.Function;
 
 @Mixin(value = InGameHud.class, priority = 1100)
 public class InGameHudMixinSquared {
@@ -81,12 +79,12 @@ public class InGameHudMixinSquared {
             method = "@MixinSquared:Handler",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIFFIIII)V"
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIFFIIII)V"
             )
     )
     private void wrapDrawTexture(
             DrawContext instance,
-            Function<Identifier, RenderLayer> renderLayers,
+            RenderPipeline pipeline,
             Identifier sprite,
             int x,
             int y,
@@ -110,7 +108,7 @@ public class InGameHudMixinSquared {
                 text,
                 x + offsetX,
                 y - 1,
-                stack.getItemBarColor(),
+                (0xFF << 24) | stack.getItemBarColor(),
                 true
         );
     }
