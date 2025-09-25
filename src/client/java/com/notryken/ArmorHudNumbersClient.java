@@ -1,8 +1,12 @@
 package com.notryken;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.text.Text;
+import net.uku3lig.ukulib.utils.Ukutils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.berdinskiybear.armorhud.ArmorHudMod;
 
 public class ArmorHudNumbersClient implements ClientModInitializer {
     public static final String MOD_ID = "armor-hud-numbers";
@@ -10,6 +14,15 @@ public class ArmorHudNumbersClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+        Ukutils.registerToggleBind(
+                new KeyBinding(
+                        "armor-hud-numbers.keybind.toggle",
+                        -1,
+                        "armorhud.name"
+                ),
+                () -> ArmorHudMod.getManager().getConfig().isWarningShown(),
+                (b) -> ArmorHudMod.getManager().getConfig().setWarningShown(b),
+                Text.translatable("armor-hud-numbers.keybind.toggle.msg")
+        );
 	}
 }
