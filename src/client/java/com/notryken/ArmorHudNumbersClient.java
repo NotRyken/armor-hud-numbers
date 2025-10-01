@@ -3,6 +3,7 @@ package com.notryken;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.uku3lig.ukulib.utils.Ukutils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class ArmorHudNumbersClient implements ClientModInitializer {
                 new KeyBinding(
                         "armor-hud-numbers.keybind.toggle",
                         -1,
-                        "armorhud.name"
+                        KeyBinding.Category.create(Identifier.of("armor-hud-numbers", "key"))
                 ),
                 () -> ArmorHudMod.getManager().getConfig().isWarningShown(),
                 (b) -> ArmorHudMod.getManager().getConfig().setWarningShown(b),
