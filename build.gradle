@@ -1,6 +1,8 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
-	id 'maven-publish'
+	id("fabric-loom") version("${loom_version}")
+	id("maven-publish")
+    id("me.modmuss50.mod-publish-plugin") version("${mpp_version}")
+    id("org.ajoberstar.grgit.service") version("${grgitservice_version}")
 }
 
 version = "${project.mod_version}+${project.minecraft_version}"
@@ -113,4 +115,67 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 	}
+}
+
+publishMods {
+    file = remapJar.archiveFile
+    version = "${mod_version}+${minecraft_version}"
+    type = STABLE
+    displayName = "v${mod_version}+${minecraft_version}"
+    modLoaders.add("fabric")
+
+    github {
+        accessToken = providers.environmentVariable("GITHUB_TOKEN")
+        repository = "TerminalMC/armor-hud-numbers"
+        commitish = grgitService.service.get().grgit.branch.current().name
+        tagName = "v${mod_version}+${minecraft_version}"
+        changelog = "[Changelog](./changelog.md#${mod_version.replaceAll("\\.", "")})"
+    }
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_API_KEY")
+        projectId = "e74hc5Bq"
+        minecraftVersions.add("1.20.1")
+        projectDescription = providers.fileContents(layout.projectDirectory.file("README.md")).asText
+        minecraftVersions.addAll(project.property("modrinth_versions").toString().split(",")
+                .findAll { !it.isBlank() }
+                .collect { it.strip() })
+        changelog = versionChangelog(rootProject.file("changelog.md"), mod_version)
+        requires {
+            id = "wF189hn9" // uku's Armor HUD
+        }
+        requires {
+            id = "Y8uFrUil" // ukulib
+        }
+        requires {
+            id = "P7dR8mSH" // Fabric API
+        }
+    }
+}
+
+static String versionChangelog(File file, String version) {
+    final lines = file.readLines()
+    final builder = new StringBuilder()
+    // Changelog version header is on the third line of the file; check it
+    if (version != lines.get(2).substring(3)) {
+        throw new IllegalArgumentException(String.format(
+                "Mod version '%s' does not match changelog version '%s'",
+                version,
+                lines.get(2).substring(3)
+        ))
+    } else {
+        // Iterate over content lines
+        for (int i = 4; i < lines.size(); i++) {
+            final line = lines.get(i)
+            if (line.startsWith("## ")) {
+                // Encountered next changelog header; finish
+                break
+            } else {
+                // Append the content line, respecting blank lines
+                if (!builder.isEmpty()) builder.append("\n")
+                if (!line.isBlank()) builder.append(line)
+            }
+        }
+    }
+    return builder.toString()
 }
