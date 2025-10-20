@@ -10,11 +10,12 @@ import org.slf4j.LoggerFactory;
 import ru.berdinskiybear.armorhud.ArmorHudMod;
 
 public class ArmorHudNumbersClient implements ClientModInitializer {
+
     public static final String MOD_ID = "armor-hud-numbers";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_ID);
 
-	@Override
-	public void onInitializeClient() {
+    @Override
+    public void onInitializeClient() {
         Ukutils.registerToggleBind(
                 new KeyBinding(
                         "armor-hud-numbers.keybind.toggle",
@@ -25,5 +26,5 @@ public class ArmorHudNumbersClient implements ClientModInitializer {
                 (b) -> ArmorHudMod.getManager().getConfig().setWarningShown(b),
                 Text.translatable("armor-hud-numbers.keybind.toggle.msg")
         );
-	}
+    }
 }

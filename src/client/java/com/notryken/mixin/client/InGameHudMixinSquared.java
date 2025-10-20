@@ -19,8 +19,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import ru.berdinskiybear.armorhud.config.ArmorHudConfig;
 
-@Mixin(value = InGameHud.class, priority = 1100)
+@Mixin(
+        value = InGameHud.class,
+        priority = 1100
+)
 public class InGameHudMixinSquared {
+
     @Shadow
     @Final
     private static int WIDTH;
