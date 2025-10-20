@@ -126,17 +126,16 @@ publishMods {
 
     github {
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        repository = "TerminalMC/armor-hud-numbers"
+        repository = "NotRyken/armor-hud-numbers"
         commitish = grgitService.service.get().grgit.branch.current().name
         tagName = "v${mod_version}+${minecraft_version}"
         changelog = "[Changelog](./changelog.md#${mod_version.replaceAll("\\.", "")})"
+        additionalFiles.from(sourcesJar.archiveFile)
     }
 
     modrinth {
         accessToken = providers.environmentVariable("MODRINTH_API_KEY")
         projectId = "e74hc5Bq"
-        minecraftVersions.add("1.20.1")
-        projectDescription = providers.fileContents(layout.projectDirectory.file("README.md")).asText
         minecraftVersions.addAll(project.property("modrinth_versions").toString().split(",")
                 .findAll { !it.isBlank() }
                 .collect { it.strip() })
@@ -150,6 +149,7 @@ publishMods {
         requires {
             id = "P7dR8mSH" // Fabric API
         }
+        projectDescription = providers.fileContents(layout.projectDirectory.file("README.md")).asText
     }
 }
 
