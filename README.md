@@ -1,3 +1,7 @@
+# Archival Notice
+
+As of v0.9.2, the core functionality of this mod is included in uku's Armor HUD.
+
 # Armor HUD Numbers
 
 A tiny add-on for [uku's Armor HUD](https://modrinth.com/project/wF189hn9) that displays numerical
